@@ -53,6 +53,8 @@
     }
   </style>
 </head>
+    <button id="checkBtn" style="margin-top: 20px;">Ολοκλήρωση</button>
+  <div id="result" style="margin-top: 15px; font-weight: bold;"></div>
 <body>
 
   <div class="container">
@@ -68,16 +70,54 @@
     <img src="lake" class="small-img" style="top: 340px; left: 470px;" alt="Λίμνη" />
   </div>
 
+  
+
+
+  
+
   <script>
-    // Επιλογή/αποεπιλογή εικόνας με κλικ
     const items = document.querySelectorAll('.small-img');
+
+    // Επιλογή/Αποεπιλογή με click
     items.forEach(img => {
       img.addEventListener('click', () => {
         img.classList.toggle('selected');
       });
     });
+
+    // Κουμπί Ολοκλήρωση
+    document.getElementById('checkBtn').addEventListener('click', () => {
+      // IDs ή alt των σωστών εικόνων
+      const correctAlts = ['Μανιτάρι', 'Λύκος', 'Κουνέλι'];
+      let correct = 0;
+      let selected = 0;
+
+      items.forEach(img => {
+        if (img.classList.contains('selected')) {
+          selected++;
+          if (correctAlts.includes(img.alt)) {
+            correct++;
+          }
+        }
+      });
+
+      const result = document.getElementById('result');
+
+      if (selected === 0) {
+        result.textContent = "⚠️ Δεν επέλεξες τίποτα!";
+        result.style.color = "orange";
+      } else if (correct === correctAlts.length && selected === correctAlts.length) {
+        result.textContent = "✅ Μπράβο! Επέλεξες σωστά όλους τους βιοτικούς παράγοντες!";
+        result.style.color = "green";
+      } else {
+        result.textContent = `🤔 Επέλεξες ${correct} σωστά από τα ${correctAlts.length}. Προσπάθησε ξανά!`;
+        result.style.color = "red";
+      }
+    });
   </script>
+
 
 </body>
 </html>
+
 
