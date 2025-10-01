@@ -107,10 +107,10 @@
         result.textContent = "⚠️ Δεν επέλεξες τίποτα!";
         result.style.color = "orange";
       } else if (correct === correctAlts.length && selected === correctAlts.length) {
-        result.textContent = "✅ Μπράβο! Επέλεξες σωστά όλους τους βιοτικούς παράγοντες!";
+        result.textContent = "✅ Πολύ καλά! Στους Βιοτικούς Παράγοντες ανήκουν τα φυτά, τα ζώα και οι αποικοδομητές. Όλα αυτά είναι ζωντανοί οργανισμοί.";
         result.style.color = "green";
       } else {
-        result.textContent = `🤔 Επέλεξες ${correct} σωστά από τα ${correctAlts.length}. Προσπάθησε ξανά!`;
+        result.textContent = `Χμμ... Ξανασκέψου το. Ανήκουν όλα όσα επέλεξες στους Βιοτικούς Παράγοντες;`;
         result.style.color = "red";
       }
     });
@@ -119,5 +119,6 @@
 
 </body>
 </html>
+
 
 
