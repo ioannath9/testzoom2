@@ -93,22 +93,24 @@
       const result = document.getElementById('result');
 
       let selectedAlts = Array.from(selectedItems).map(img => img.alt);
-      let correctCount = selectedAlts.filter(alt => correctAlts.includes(alt)).length;
 
-      if (correctCount === 0) {
-        result.textContent = "❌ Είσαι σίγουρος;";
+      // Έλεγχος αν ο χρήστης διάλεξε λάθος επιλογές
+      let hasWrong = selectedAlts.some(alt => !correctAlts.includes(alt));
+      // Έλεγχος πόσες σωστές διάλεξε
+      let correctSelected = selectedAlts.filter(alt => correctAlts.includes(alt));
+      
+      if (hasWrong) {
+        result.textContent = "🤔 Χμμ... ξανασκέψου το. Ανήκουν όλα όσα επέλεξες στους Βιοτικούς Παράγοντες;";
         result.style.color = "red";
-      } else if (correctCount === correctAlts.length && selectedAlts.length === correctAlts.length) {
+      } else if (correctSelected.length < correctAlts.length) {
+        result.textContent = "⚠️ Χμμ... κάτι ξέχασες!";
+        result.style.color = "orange";
+      } else {
         result.textContent = "✅ Μπράβο! Όλα σωστά!";
         result.style.color = "green";
-      } else {
-        result.textContent = "🤔 Κάτι σου ξέφυγε...";
-        result.style.color = "orange";
       }
     });
   </script>
 
 </body>
 </html>
-
-
