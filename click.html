@@ -63,4 +63,88 @@
     }
 
     #result {
-      margin-top:
+      margin-top: 15px;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    #resetBtn {
+      display: none; /* το κουμπί επανάληψης κρύβεται στην αρχή */
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <img src="mushroom.png" class="small-img" style="top: 390px; left: 590px;" alt="mushrooms" />
+    <img src="ground" class="small-img" style="top: 270px; left: 550px;" alt="ground" />
+    <img src="clouds-icon.png" class="small-img" style="top: 50px; left: 550px;" alt="cloud"/>
+    <img src="wind" class="small-img" style="top: 40px; left: 200px;" alt="wind"/>
+    <img src="cute-wolf-cartoon.png" class="small-img" style="top: 255px; left: 220px;" alt="wolf" />
+    <img src="sun.png" class="small-img" style="top: 120px; left: 400px;" alt="Sun" />
+    <img src="rabbit2.png" class="small-img" style="top: 400px; left: 450px;" alt="rabbit" />
+    <img src="lake" class="small-img" style="top: 280px; left: 320px; width:200px; border-radius:0;" alt="lake" />
+    <img src="tree" class="small-img" style="height: 200px; width:auto; top: 240px; left: 48px;" alt="tree" />
+    <img src="grass" class="small-img" style="top: 400px; left: 240px;" alt="Small 1" />
+  </div>
+
+  <div id="buttons">
+    <button id="checkBtn">Έλεγχος</button>
+    <button id="resetBtn">Επανάληψη</button>
+  </div>
+
+  <div id="result"></div>
+
+  <script>
+    const items = document.querySelectorAll('.small-img');
+    // Σωστά αντικείμενα (βιοτικοί παράγοντες)
+    const correctAlts = ['mushrooms', 'wolf', 'rabbit', 'tree', 'Small 1'];
+
+    items.forEach(img => {
+      img.addEventListener('click', () => {
+        img.classList.toggle('selected');
+      });
+    });
+
+    const checkBtn = document.getElementById('checkBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const result = document.getElementById('result');
+
+    checkBtn.addEventListener('click', () => {
+      const selectedItems = document.querySelectorAll('.small-img.selected');
+      let selectedAlts = Array.from(selectedItems).map(img => img.alt);
+
+      if (selectedAlts.length === 0) {
+        result.textContent = "⚠️ Επίλεξε τους βιοτικούς παράγοντες!";
+        result.style.color = "orange";
+        resetBtn.style.display = "inline-block"; 
+        return;
+      }
+
+      let hasWrong = selectedAlts.some(alt => !correctAlts.includes(alt));
+      let correctSelected = selectedAlts.filter(alt => correctAlts.includes(alt));
+
+      if (hasWrong) {
+        result.textContent = "🤔 Χμμ... ξανασκέψου το. Ανήκουν όλα όσα επέλεξες στους Βιοτικούς Παράγοντες;";
+        result.style.color = "red";
+        resetBtn.style.display = "inline-block"; 
+      } else if (correctSelected.length < correctAlts.length) {
+        result.textContent = "⚠️ Χμμ... κάτι ξέχασες!";
+        result.style.color = "orange";
+        resetBtn.style.display = "inline-block"; 
+      } else {
+        result.textContent = "✅ Μπράβο! Όλα σωστά!";
+        result.style.color = "green";
+        resetBtn.style.display = "none"; 
+      }
+    });
+
+    resetBtn.addEventListener('click', () => {
+      items.forEach(img => img.classList.remove('selected'));
+      result.textContent = "";
+      resetBtn.style.display = "none";
+    });
+  </script>
+
+</body>
+</html>
