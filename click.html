@@ -36,13 +36,19 @@
       filter: drop-shadow(0 0 6px #fff);
     }
 
+    /* Όταν είναι επιλεγμένη -> πιο χοντρή πράσινη γραμμή */
     .small-img.selected {
-      border-color: limegreen;
+      border: 5px solid limegreen;
       transform: scale(1.2);
       z-index: 10;
     }
 
-    #checkBtn {
+    #buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    #checkBtn, #resetBtn {
       padding: 10px 20px;
       font-size: 16px;
       background-color: #007bff;
@@ -52,65 +58,9 @@
       cursor: pointer;
     }
 
-    #checkBtn:hover {
+    #checkBtn:hover, #resetBtn:hover {
       background-color: #0056b3;
     }
 
     #result {
-      margin-top: 15px;
-      font-weight: bold;
-      font-size: 18px;
-    }
-  </style>
-</head>
-<body>
-
-  <div class="container">
-    <!-- Μικρές εικόνες -->
-    <img src="mushroom.png" class="small-img" style="top: 280px; left: 90px;" alt="Μανιτάρι" />
-    <img src="clouds-icon.png" class="small-img" style="top: 50px; left: 550px;" alt="Σύννεφα" />
-    <img src="cute-wolf-cartoon.png" class="small-img" style="top: 255px; left: 200px;" alt="Λύκος" />
-    <img src="sun.png" class="small-img" style="top: 150px; left: 400px;" alt="Ήλιος" />
-    <img src="rabbit2.png" class="small-img" style="top: 400px; left: 450px;" alt="Κουνέλι" />
-    <img src="lake" class="small-img" style="top: 340px; left: 470px;" alt="Λίμνη" />
-  </div>
-
-  <button id="checkBtn">Έλεγχος</button>
-  <div id="result"></div>
-
-  <script>
-    const items = document.querySelectorAll('.small-img');
-    const correctAlts = ['Μανιτάρι', 'Λύκος', 'Κουνέλι'];
-
-    items.forEach(img => {
-      img.addEventListener('click', () => {
-        img.classList.toggle('selected');
-      });
-    });
-
-    document.getElementById('checkBtn').addEventListener('click', () => {
-      const selectedItems = document.querySelectorAll('.small-img.selected');
-      const result = document.getElementById('result');
-
-      let selectedAlts = Array.from(selectedItems).map(img => img.alt);
-
-      // Έλεγχος αν ο χρήστης διάλεξε λάθος επιλογές
-      let hasWrong = selectedAlts.some(alt => !correctAlts.includes(alt));
-      // Έλεγχος πόσες σωστές διάλεξε
-      let correctSelected = selectedAlts.filter(alt => correctAlts.includes(alt));
-      
-      if (hasWrong) {
-        result.textContent = "🤔 Χμμ... ξανασκέψου το. Ανήκουν όλα όσα επέλεξες στους Βιοτικούς Παράγοντες;";
-        result.style.color = "red";
-      } else if (correctSelected.length < correctAlts.length) {
-        result.textContent = "⚠️ Χμμ... κάτι ξέχασες!";
-        result.style.color = "orange";
-      } else {
-        result.textContent = "✅ Μπράβο! Όλα σωστά!";
-        result.style.color = "green";
-      }
-    });
-  </script>
-
-</body>
-</html>
+      margin-top:
