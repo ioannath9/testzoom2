@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8">
+  <title>Σκηνή με Βέλη</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: #f5f5f5;
+    }
+
+    .container {
+      position: relative;
+      width: 900px;
+      height: 600px;
+      border: 2px solid #ccc;
+      background-color: #add8e6; /* φόντο ΜΟΝΟ στο πλαίσιο */
+    }
+
+    .small-img {
+      position: absolute;
+      width: 100px;
+      height: auto;
+      z-index: 5;
+    }
+
+    svg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none; /* να μην ενοχλεί τα κλικ */
+      z-index: 1;
+    }
+
+    .arrow {
+      stroke: black;
+      stroke-width: 2.5;
+      fill: none;
+      marker-end: url(#arrowhead);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container" id="scene">
+    <!-- SVG για τα βέλη -->
+    <svg id="arrows">
+      <defs>
+        <marker id="arrowhead" markerWidth="10" markerHeight="7" 
+                refX="10" refY="3.5" orient="auto">
+          <polygon points="0 0, 10 3.5, 0 7" fill="black"/>
+        </marker>
+      </defs>
+
+      <!-- Όλα τα βελάκια -->
+      <path id="arrow1" class="arrow"/>
+      <path id="arrow2" class="arrow"/>
+      <path id="arrow3" class="arrow"/>
+      <path id="arrow4" class="arrow"/>
+      <path id="arrow5" class="arrow"/>
+      <path id="arrow6" class="arrow"/>
+      <path id="arrow7" class="arrow"/>
+      <path id="arrow8" class="arrow"/>
+      <path id="arrow9" class="arrow"/>
+      <path id="arrow10" class="arrow"/>
+      <path id="arrow11" class="arrow"/>
+      <path id="arrow12" class="arrow"/>
+    </svg>
+
+    <!-- Εικόνες -->
+    <img src="mushroom.png" id="mushrooms" class="small-img" style="top: 440px; left: 590px;" alt="mushrooms" />
+    <img src="ground" id="ground" class="small-img" style="top: 270px; left: 550px;" alt="ground" />
+    <img src="clouds-icon.png" id="cloud" class="small-img" style="top: 50px; left: 550px;" alt="cloud"/>
+    <img src="wind" id="wind" class="small-img" style="top: 40px; left: 200px;" alt="wind"/>
+    <img src="cute-wolf-cartoon.png" id="wolf" class="small-img" style="top: 255px; left: 220px;" alt="wolf" />
+    <img src="sun.png" id="sun" class="small-img" style="top: 120px; left: 400px;" alt="Sun" />
+    <img src="rabbit2.png" id="rabbit" class="small-img" style="top: 500px; left: 450px;" alt="rabbit" />
+    <img src="lake" id="lake" class="small-img" style="top: 330px; left: 320px; width:200px;" alt="lake" />
+    <img src="tree" id="tree" class="small-img" style="height: 200px; width:auto; top: 240px; left: 48px;" alt="tree" />
+    <img src="grass" id="grass" class="small-img" style="top: 450px; left: 240px;" alt="grass" />
+  </div>
+
+  <script>
+    function center(el) {
+      const r = el.getBoundingClientRect();
+      const parent = el.parentElement.getBoundingClientRect();
+      return {
+        x: r.left - parent.left + r.width/2,
+        y: r.top - parent.top + r.height/2
+      };
+    }
+
+    // Ευθεία σύνδεση
+    function connectStraight(id1, id2, arrowId) {
+      const el1 = document.getElementById(id1);
+      const el2 = document.getElementById(id2);
+      const p1 = center(el1);
+      const p2 = center(el2);
+
+      const dx = p2.x - p1.x;
+      const dy = p2.y - p1.y;
+      const len = Math.sqrt(dx*dx + dy*dy);
+
+      const offset = 60;
+      const ux = dx / len;
+      const uy = dy / len;
+
+      const x1 = p1.x + ux * offset;
+      const y1 = p1.y + uy * offset;
+      const x2 = p2.x - ux * offset;
+      const y2 = p2.y - uy * offset;
+
+      const line = document.getElementById(arrowId);
+      line.setAttribute("d", `M ${x1} ${y1} L ${x2} ${y2}`);
+    }
+
+    // Καμπύλη σύνδεση
+    function connectCurve(id1, id2, arrowId, curveOffset=80) {
+      const el1 = document.getElementById(id1);
+      const el2 = document.getElementById(id2);
+      const p1 = center(el1);
+      const p2 = center(el2);
+
+      const dx = p2.x - p1.x;
+      const dy = p2.y - p1.y;
+      const len = Math.sqrt(dx*dx + dy*dy);
+
+      const offset = 60;
+      const ux = dx / len;
+      const uy = dy / len;
+
+      const x1 = p1.x + ux * offset;
+      const y1 = p1.y + uy * offset;
+      const x2 = p2.x - ux * offset;
+      const y2 = p2.y - uy * offset;
+
+      const cx = (x1 + x2) / 2 - uy * curveOffset;
+      const cy = (y1 + y2) / 2 + ux * curveOffset;
+
+      const path = document.getElementById(arrowId);
+      path.setAttribute("d", `M ${x1} ${y1} Q ${cx} ${cy} ${x2} ${y2}`);
+    }
+
+/*    function drawArrows() {
+      // Μοναδικές σχέσεις -> ευθεία
+      connectStraight("grass", "rabbit", "arrow1");
+      connectStraight("rabbit", "wolf", "arrow2");
+      connectStraight("sun", "tree", "arrow3");
+      connectStraight("ground", "tree", "arrow4");
+      connectStraight("lake", "rabbit", "arrow5");
+      connectStraight("lake", "tree", "arrow6");
+      connectStraight("sun", "lake", "arrow9");
+      connectStraight("wolf", "ground", "arrow12");
+
+      // Αντίθετα ζευγάρια -> καμπύλες
+      connectCurve("cloud", "lake", "arrow7", 120);
+      connectCurve("lake", "cloud", "arrow8", -120);
+
+      connectCurve("ground", "mushrooms", "arrow10", 80);
+      connectCurve("mushrooms", "ground", "arrow11", -80);
+    }*/
+
+  //  window.onload = drawArrows;
+ //   window.onresize = drawArrows;
+  </script>
+
+</body>
+</html>
