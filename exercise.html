@@ -97,6 +97,31 @@
       };
     }
 
+    // Ευθεία σύνδεση
+    function connectStraight(id1, id2, arrowId) {
+      const el1 = document.getElementById(id1);
+      const el2 = document.getElementById(id2);
+      const p1 = center(el1);
+      const p2 = center(el2);
+
+      const dx = p2.x - p1.x;
+      const dy = p2.y - p1.y;
+      const len = Math.sqrt(dx*dx + dy*dy);
+
+      const offset = 60;
+      const ux = dx / len;
+      const uy = dy / len;
+
+      const x1 = p1.x + ux * offset;
+      const y1 = p1.y + uy * offset;
+      const x2 = p2.x - ux * offset;
+      const y2 = p2.y - uy * offset;
+
+      const line = document.getElementById(arrowId);
+      line.setAttribute("d", `M ${x1} ${y1} L ${x2} ${y2}`);
+    }
+
+    // Καμπύλη σύνδεση
     function connectCurve(id1, id2, arrowId, curveOffset=80) {
       const el1 = document.getElementById(id1);
       const el2 = document.getElementById(id2);
@@ -107,7 +132,7 @@
       const dy = p2.y - p1.y;
       const len = Math.sqrt(dx*dx + dy*dy);
 
-      const offset = 60; // τα βέλη ξεκινούν λίγο έξω από τις εικόνες
+      const offset = 60;
       const ux = dx / len;
       const uy = dy / len;
 
@@ -116,7 +141,6 @@
       const x2 = p2.x - ux * offset;
       const y2 = p2.y - uy * offset;
 
-      // καμπύλη με σημείο ελέγχου εκτός γραμμής
       const cx = (x1 + x2) / 2 - uy * curveOffset;
       const cy = (y1 + y2) / 2 + ux * curveOffset;
 
@@ -125,18 +149,22 @@
     }
 
     function drawArrows() {
-      connectCurve("grass", "rabbit", "arrow1");
-      connectCurve("rabbit", "wolf", "arrow2");
-      connectCurve("sun", "tree", "arrow3");
-      connectCurve("ground", "tree", "arrow4");
-      connectCurve("lake", "rabbit", "arrow5", 100);
-      connectCurve("lake", "tree", "arrow6", 100);
+      // Μοναδικές σχέσεις -> ευθεία
+      connectStraight("grass", "rabbit", "arrow1");
+      connectStraight("rabbit", "wolf", "arrow2");
+      connectStraight("sun", "tree", "arrow3");
+      connectStraight("ground", "tree", "arrow4");
+      connectStraight("lake", "rabbit", "arrow5");
+      connectStraight("lake", "tree", "arrow6");
+      connectStraight("sun", "lake", "arrow9");
+      connectStraight("wolf", "ground", "arrow12");
+
+      // Αντίθετα ζευγάρια -> καμπύλες
       connectCurve("cloud", "lake", "arrow7", 120);
       connectCurve("lake", "cloud", "arrow8", -120);
-      connectCurve("sun", "lake", "arrow9", 90);
+
       connectCurve("ground", "mushrooms", "arrow10", 80);
       connectCurve("mushrooms", "ground", "arrow11", -80);
-      connectCurve("wolf", "ground", "arrow12", 70);
     }
 
     window.onload = drawArrows;
