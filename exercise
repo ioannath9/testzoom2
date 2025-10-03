@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8">
+  <title>Σχέσεις</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      background-color: #add8e6; /* ανοιχτό γαλάζιο */
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .container {
+      position: relative;
+      width: 800px;
+      height: 500px;
+      border: 2px solid #ccc;
+      margin-bottom: 20px;
+    }
+
+    .small-img {
+      position: absolute;
+      width: 100px;
+      height: auto;
+    }
+
+    svg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 800px;
+      height: 500px;
+      pointer-events: none; /* να μη μπλοκάρει τα κλικ */
+    }
+
+    line {
+      stroke: red;
+      stroke-width: 3;
+      marker-end: url(#arrowhead);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Εικόνες -->
+    <img src="mushroom.png" class="small-img" style="top: 390px; left: 590px;" alt="mushrooms" id="mushroom"/>
+    <img src="ground" class="small-img" style="top: 270px; left: 550px;" alt="ground" id="ground"/>
+    <img src="clouds-icon.png" class="small-img" style="top: 50px; left: 550px;" alt="cloud" id="cloud"/>
+    <img src="wind" class="small-img" style="top: 40px; left: 200px;" alt="wind" id="wind"/>
+    <img src="cute-wolf-cartoon.png" class="small-img" style="top: 255px; left: 220px;" alt="wolf" id="wolf"/>
+    <img src="sun.png" class="small-img" style="top: 120px; left: 400px;" alt="Sun" id="sun"/>
+    <img src="rabbit2.png" class="small-img" style="top: 400px; left: 450px;" alt="rabbit" id="rabbit"/>
+    <img src="lake" class="small-img" style="top: 280px; left: 320px; width:200px;" alt="lake" id="lake"/>
+    <img src="tree" class="small-img" style="height: 200px; width:auto; top: 240px; left: 48px;" alt="tree" id="tree"/>
+    <img src="grass" class="small-img" style="top: 400px; left: 240px;" alt="Small 1" id="grass"/>
+
+    <!-- SVG για τα βέλη -->
+    <svg>
+      <defs>
+        <marker id="arrowhead" markerWidth="10" markerHeight="7"
+          refX="10" refY="3.5" orient="auto">
+          <polygon points="0 0, 10 3.5, 0 7" fill="red" />
+        </marker>
+      </defs>
+
+      <!-- Βέλη -->
+      <line id="arrow1"/> <!-- grass -> rabbit -->
+      <line id="arrow2"/> <!-- rabbit -> wolf -->
+      <line id="arrow3"/> <!-- sun -> tree -->
+      <line id="arrow4"/> <!-- ground -> tree -->
+      <line id="arrow5"/> <!-- lake -> rabbit -->
+      <line id="arrow6"/> <!-- lake -> tree -->
+      <line id="arrow7"/> <!-- cloud -> lake -->
+      <line id="arrow8"/> <!-- lake -> cloud -->
+      <line id="arrow9"/> <!-- sun -> lake -->
+      <line id="arrow10"/> <!-- ground -> mushroom -->
+      <line id="arrow11"/> <!-- mushroom -> ground -->
+      <line id="arrow12"/> <!-- wolf -> ground -->
+    </svg>
+  </div>
+
+  <script>
+    function center(el) {
+      const rect = el.getBoundingClientRect();
+      const parentRect = el.parentElement.getBoundingClientRect();
+      return {
+        x: rect.left - parentRect.left + rect.width / 2,
+        y: rect.top - parentRect.top + rect.height / 2
+      };
+    }
+
+    function connect(id1, id2, lineId) {
+      const el1 = document.getElementById(id1);
+      const el2 = document.getElementById(id2);
+      const p1 = center(el1);
+      const p2 = center(el2);
+      const line = document.getElementById(lineId);
+      line.setAttribute("x1", p1.x);
+      line.setAttribute("y1", p1.y);
+      line.setAttribute("x2", p2.x);
+      line.setAttribute("y2", p2.y);
+    }
+
+    function updateArrows() {
+      connect("grass","rabbit","arrow1");
+      connect("rabbit","wolf","arrow2");
+      connect("sun","tree","arrow3");
+      connect("ground","tree","arrow4");
+      connect("lake","rabbit","arrow5");
+      connect("lake","tree","arrow6");
+      connect("cloud","lake","arrow7");
+      connect("lake","cloud","arrow8");
+      connect("sun","lake","arrow9");
+      connect("ground","mushroom","arrow10");
+      connect("mushroom","ground","arrow11");
+      connect("wolf","ground","arrow12");
+    }
+
+    window.onload = updateArrows;
+    window.onresize = updateArrows;
+  </script>
+
+</body>
+</html>
